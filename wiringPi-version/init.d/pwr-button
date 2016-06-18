@@ -1,0 +1,50 @@
+#!/bin/bash
+# /etc/init.d/pwr-button
+#
+
+### BEGIN INIT INFO
+# Provides:          pwr-button
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: pwr-button
+# Description:       a power button for external 3D printer
+### END INIT INFO
+
+touch /var/lock/pwr-button
+
+case "$1" in
+        start)
+            if [ ! -f /var/local/pwr-button.pid ]; then
+              /home/pi/bin/pwr-button.sh &
+              echo $! > /var/local/pwr-button.pid
+            else
+              echo "Already running or stale PID file? (/var/local/pwr-button.pid)"
+            fi
+            ;;
+         
+        stop)
+            if [ -f /var/local/pwr-button.pid ]; then
+              kill `cat /var/local/pwr-button.pid`
+              rm -f /var/local/pwr-button.pid
+              /usr/local/bin/gpio write 3 0
+            fi
+            ;;
+         
+        status)
+            if [ -f /var/local/pwr-button.pid ]; then
+              echo "Running with PID `cat /var/local/pwr-button.pid`"
+            else
+              echo "Not running."
+            fi
+            ;;
+        restart)
+            stop
+            start
+            ;;
+        *)
+            echo $"Usage: $0 {start|stop|restart|status}"
+            exit 1
+esac
+
