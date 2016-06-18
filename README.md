@@ -8,9 +8,23 @@ This simple C++ program makes use of the `GPIOClass` provided by Hussam Al-Herta
 
 I wanted to be able to turn my 3D printer's power on and off without having to put `sudo` in front of the command.
 
-In Linux (Raspian) an executable file can be made to run as the user who owns it (`chown`) -- no nmatter who runs it. If that user is `root` then the executable with run as `root`, just like using `sudo`. But this does not work for `#!` scripts -- Python scripts included -- only for proper executables.
+In Linux (Raspian) an executable file can be made to run as the user who owns it (`chown`) -- no nmatter who runs it. If that user is `root` then the executable run as `root`, just like using `sudo`, only not having to. 
 
-Well, yes; one can set up a user to be allowed to run sudo without a password (the default situation on the R'Pi) and then use a wrapper script to put the `sudo` in front of a call to the actual Python script ... ugh. Call me an old school purist if you must, but yuck.
+However, this does not work for `#!` scripts -- Python scripts included -- only for proper executables. I think the security ramifications of that are fairly obvious. ;-)
+
+Well, yes; one can set up a user to be allowed to run sudo without a password (the default situation on the R'Pi) and then use a wrapper script to put the `sudo` in front of a call to the actual Python script ... 
+
+```
+$ mv 3dpwr 3dpwr.real
+$ vi 3dpwr
+---
+#!/bin/bash
+sudo 3dpwr.real $*
+---
+:wq
+```
+
+... ugh. Call me an old school purist if you must, but yuck.
 
 ## Installation
 
