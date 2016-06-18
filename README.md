@@ -53,4 +53,6 @@ $ 3dpwr off
 
 Simply edit `3dpwr.cpp` -- following your hacker nose -- and run `make ; sudo make install` again.
 
+## Oops!
 
+Did I mention I was a little, "old school"? I forgot to Google to see if this had been done before, only better. LOL I have just discovered [wiringPi](http://wiringpi.com/).
